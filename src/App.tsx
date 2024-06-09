@@ -1,6 +1,7 @@
 import Message from "./Message";
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
+import Button from "./components/Button";
 
 function App() {
   let items = [
@@ -23,6 +24,9 @@ function App() {
         onSelectItem={handleSelectItem}
       />
       <Alert>It is an Alert!</Alert>
+      <Button color="secondary" onClick={() => console.log("Clicked")}>
+        My Button
+      </Button>
     </>
   );
 }
