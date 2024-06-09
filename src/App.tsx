@@ -7,6 +7,7 @@ import { IoCalendarClear } from "react-icons/io5";
 import Like from "./components/Like";
 import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
+import ExpandableText from "./components/ExpandableText";
 
 function App() {
   let items = [
@@ -39,8 +40,21 @@ function App() {
         My Button
       </Button>
       <Like onClick={() => console.log("You clicked the Like button!")} /> */}
-      <NavBar cartItemsCount={cartItems.length} />
-      <Cart cartItems={cartItems} onClearCart={() => setCartItems([])} />
+      {/* <NavBar cartItemsCount={cartItems.length} />
+      <Cart cartItems={cartItems} onClearCart={() => setCartItems([])} /> */}
+      <ExpandableText maxChars={10}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
+        porro nihil modi odit consequatur tempore ullam repellat! Debitis nulla
+        dolor aperiam ea, optio aut impedit at nostrum, error possimus laborum?
+        Consequuntur, deleniti a rem doloremque impedit facilis tenetur unde
+        aliquam delectus est eligendi ea odit earum adipisci distinctio
+        mollitia! Labore enim temporibus beatae pariatur ratione dicta, ipsa,
+        quaerat deleniti reiciendis exercitationem iusto delectus quod eius a
+        dolores maiores eos deserunt dolore necessitatibus doloremque animi
+        ipsam maxime amet. A itaque consectetur mollitia tempore at unde
+        exercitationem ipsum pariatur ratione est, necessitatibus inventore
+        accusamus facilis, nam velit. Nostrum est provident fuga facilis?
+      </ExpandableText>
     </>
   );
 }
