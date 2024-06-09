@@ -2,6 +2,7 @@ import Message from "./Message";
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
+import { useState } from "react";
 
 function App() {
   let items = [
@@ -16,15 +17,19 @@ function App() {
     console.log("You selected: " + item);
   };
 
+  const [alertVisible, setAlertVisibility] = useState(false);
+
   return (
     <>
-      <ListGroup
+      {/* <ListGroup
         items={items}
         heading="List Group Heading"
         onSelectItem={handleSelectItem}
-      />
-      <Alert>It is an Alert!</Alert>
-      <Button color="secondary" onClick={() => console.log("Clicked")}>
+      /> */}
+      {alertVisible && (
+        <Alert onClose={() => setAlertVisibility(false)}>It is an Alert!</Alert>
+      )}
+      <Button color="secondary" onClick={() => setAlertVisibility(true)}>
         My Button
       </Button>
     </>
