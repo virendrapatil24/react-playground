@@ -1,8 +1,10 @@
 import Message from "./Message";
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
-import Button from "./components/Button";
+import Button from "./components/Button/Button";
 import { useState } from "react";
+import { IoCalendarClear } from "react-icons/io5";
+import Like from "./components/Like";
 
 function App() {
   let items = [
@@ -25,13 +27,14 @@ function App() {
         items={items}
         heading="List Group Heading"
         onSelectItem={handleSelectItem}
-      /> */}
+      />
       {alertVisible && (
         <Alert onClose={() => setAlertVisibility(false)}>It is an Alert!</Alert>
       )}
       <Button color="secondary" onClick={() => setAlertVisibility(true)}>
         My Button
-      </Button>
+      </Button> */}
+      <Like onClick={() => console.log("You clicked the Like button!")} />
     </>
   );
 }
