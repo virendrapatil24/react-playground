@@ -9,23 +9,52 @@ import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
 import Form from "./components/Form";
+import ExpenseList from "./expense-tracker/components/ExpenseList";
+import { set } from "react-hook-form";
 
 function App() {
-  let items = [
-    "An item",
-    "A second item",
-    "A third item",
-    "A fourth item",
-    "And a fifth one",
-  ];
+  const [expenses, setExpenses] = useState([
+    {
+      id: 1,
+      description: "Rent",
+      amount: 1099,
+      category: "Home",
+    },
+    {
+      id: 2,
+      description: "Coffee",
+      amount: 20,
+      category: "Food",
+    },
+    {
+      id: 3,
+      description: "Burger",
+      amount: 20,
+      category: "Food",
+    },
+    {
+      id: 4,
+      description: "Camera",
+      amount: 200,
+      category: "Electronics",
+    },
+  ]);
 
-  const handleSelectItem = (item: string) => {
-    console.log("You selected: " + item);
-  };
+  // let items = [
+  //   "An item",
+  //   "A second item",
+  //   "A third item",
+  //   "A fourth item",
+  //   "And a fifth one",
+  // ];
 
-  const [alertVisible, setAlertVisibility] = useState(false);
+  // const handleSelectItem = (item: string) => {
+  //   console.log("You selected: " + item);
+  // };
 
-  const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
+  // const [alertVisible, setAlertVisibility] = useState(false);
+
+  // const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
 
   return (
     <>
@@ -56,7 +85,11 @@ function App() {
         exercitationem ipsum pariatur ratione est, necessitatibus inventore
         accusamus facilis, nam velit. Nostrum est provident fuga facilis?
       </ExpandableText> */}
-      <Form />
+      {/* <Form /> */}
+      <ExpenseList
+        expenses={expenses}
+        onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
+      />
     </>
   );
 }
