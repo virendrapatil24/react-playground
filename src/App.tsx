@@ -11,8 +11,10 @@ import ExpandableText from "./components/ExpandableText";
 import Form from "./components/Form";
 import ExpenseList from "./expense-tracker/components/ExpenseList";
 import { set } from "react-hook-form";
+import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
 
 function App() {
+  const [selctedCategory, setSelectCategory] = useState("");
   const [expenses, setExpenses] = useState([
     {
       id: 1,
@@ -39,6 +41,10 @@ function App() {
       category: "Electronics",
     },
   ]);
+
+  const visibleExpenses = selctedCategory
+    ? expenses.filter((expense) => expense.category === selctedCategory)
+    : expenses;
 
   // let items = [
   //   "An item",
@@ -86,8 +92,13 @@ function App() {
         accusamus facilis, nam velit. Nostrum est provident fuga facilis?
       </ExpandableText> */}
       {/* <Form /> */}
+      <div className="mb-3">
+        <ExpenseFilter
+          onSelectCategory={(category) => setSelectCategory(category)}
+        />
+      </div>
       <ExpenseList
-        expenses={expenses}
+        expenses={visibleExpenses}
         onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
       />
     </>
