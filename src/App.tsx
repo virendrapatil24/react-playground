@@ -14,39 +14,41 @@ import ExpenseList from "./expense-tracker/components/ExpenseList";
 import { set } from "react-hook-form";
 import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
 import ExpenseForm from "./expense-tracker/components/ExpenseForm";
+import ProductList from "./components/ProductList";
+import axios from "axios";
 
 function App() {
-  const [selctedCategory, setSelectCategory] = useState("");
-  const [expenses, setExpenses] = useState([
-    {
-      id: 1,
-      description: "Rent",
-      amount: 1099,
-      category: "Home",
-    },
-    {
-      id: 2,
-      description: "Coffee",
-      amount: 20,
-      category: "Food",
-    },
-    {
-      id: 3,
-      description: "Burger",
-      amount: 20,
-      category: "Food",
-    },
-    {
-      id: 4,
-      description: "Camera",
-      amount: 200,
-      category: "Electronics",
-    },
-  ]);
+  // const [selctedCategory, setSelectCategory] = useState("");
+  // const [expenses, setExpenses] = useState([
+  //   {
+  //     id: 1,
+  //     description: "Rent",
+  //     amount: 1099,
+  //     category: "Home",
+  //   },
+  //   {
+  //     id: 2,
+  //     description: "Coffee",
+  //     amount: 20,
+  //     category: "Food",
+  //   },
+  //   {
+  //     id: 3,
+  //     description: "Burger",
+  //     amount: 20,
+  //     category: "Food",
+  //   },
+  //   {
+  //     id: 4,
+  //     description: "Camera",
+  //     amount: 200,
+  //     category: "Electronics",
+  //   },
+  // ]);
 
-  const visibleExpenses = selctedCategory
-    ? expenses.filter((expense) => expense.category === selctedCategory)
-    : expenses;
+  // const visibleExpenses = selctedCategory
+  //   ? expenses.filter((expense) => expense.category === selctedCategory)
+  //   : expenses;
 
   // let items = [
   //   "An item",
@@ -63,6 +65,8 @@ function App() {
   // const [alertVisible, setAlertVisibility] = useState(false);
 
   // const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
+
+  // const [category, setCategory] = useState("");
 
   return (
     <>
@@ -94,7 +98,7 @@ function App() {
         accusamus facilis, nam velit. Nostrum est provident fuga facilis?
       </ExpandableText> */}
       {/* <Form /> */}
-      <div className="mb-5">
+      {/* <div className="mb-5">
         <ExpenseForm
           onSubmit={(expense) =>
             setExpenses([...expenses, { ...expense, id: expenses.length + 1 }])
@@ -109,7 +113,18 @@ function App() {
       <ExpenseList
         expenses={visibleExpenses}
         onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
-      />
+      /> */}
+      {/* <div>
+        <select
+          className="form-select"
+          onChange={(event) => setCategory(event.target.value)}
+        >
+          <option value=""></option>
+          <option value="Clothing">Clothing</option>
+          <option value="Household">Household</option>
+        </select>
+        <ProductList category={category} />
+      </div> */}
     </>
   );
 }
