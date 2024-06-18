@@ -3,7 +3,7 @@ import Message from "./Message";
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
 import Button from "./components/Button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoCalendarClear } from "react-icons/io5";
 import Like from "./components/Like";
 import NavBar from "./components/NavBar";
@@ -16,6 +16,25 @@ import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
 import ExpenseForm from "./expense-tracker/components/ExpenseForm";
 import ProductList from "./components/ProductList";
 import axios from "axios";
+
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+}
 
 function App() {
   // const [selctedCategory, setSelectCategory] = useState("");
@@ -67,6 +86,16 @@ function App() {
   // const [cartItems, setCartItems] = useState(["Product1", "Product2"]);
 
   // const [category, setCategory] = useState("");
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<User[]>("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        setUsers(response.data);
+      });
+  }, []);
 
   return (
     <>
@@ -125,6 +154,14 @@ function App() {
         </select>
         <ProductList category={category} />
       </div> */}
+      <div>
+        {users.map((user) => (
+          <div key={user.id}>
+            <h1>{user.name}</h1>
+            <p>{user.email}</p>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
