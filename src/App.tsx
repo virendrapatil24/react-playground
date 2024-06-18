@@ -88,12 +88,16 @@ function App() {
   // const [category, setCategory] = useState("");
 
   const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/users")
+      .get<User[]>("https://jsonplaceholder.typicode.com/ujsers")
       .then((response) => {
         setUsers(response.data);
+      })
+      .catch((error) => {
+        setError(error.message);
       });
   }, []);
 
@@ -154,6 +158,7 @@ function App() {
         </select>
         <ProductList category={category} />
       </div> */}
+      <p className="text-danger">{error}</p>
       <div>
         {users.map((user) => (
           <div key={user.id}>
