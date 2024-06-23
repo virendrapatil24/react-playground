@@ -17,6 +17,7 @@ import ExpenseForm from "./expense-tracker/components/ExpenseForm";
 import ProductList from "./components/ProductList";
 import axios, { AxiosError, CanceledError } from "axios";
 import UserService, { User } from "./services/user-services";
+import useUsers from "./hooks/useUsers";
 
 function App() {
   // const [selctedCategory, setSelectCategory] = useState("");
@@ -69,34 +70,7 @@ function App() {
 
   // const [category, setCategory] = useState("");
 
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const { request, cancel } = UserService.getAll<User>();
-    request
-      .then((response) => {
-        setUsers(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        if (error instanceof CanceledError) {
-          console.log("Request canceled", error.message);
-        } else if (error instanceof Error) {
-          setError(error.message);
-        } else if (error instanceof AxiosError) {
-          setError(error.message);
-        }
-        setError(error.message);
-        setIsLoading(false);
-      });
-
-    return () => {
-      cancel();
-    };
-  }, []);
+  const { users, error, isLoading, setUsers, setError } = useUsers();
 
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
@@ -202,6 +176,7 @@ function App() {
           </div>
         ))}
       </div>
+      <button onClick={createUser}>Create</button>
     </>
   );
 }
