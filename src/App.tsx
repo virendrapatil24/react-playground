@@ -16,25 +16,7 @@ import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
 import ExpenseForm from "./expense-tracker/components/ExpenseForm";
 import ProductList from "./components/ProductList";
 import axios, { AxiosError, CanceledError } from "axios";
-
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-}
+import UserService, { User } from "./services/user-services";
 
 function App() {
   // const [selctedCategory, setSelectCategory] = useState("");
@@ -89,34 +71,66 @@ function App() {
 
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get<User[]>(
-          "https://jsonplaceholder.typicode.com/users",
-          { signal: controller.signal }
-        );
+    setIsLoading(true);
+    const { request, cancel } = UserService.getAllUsers();
+    request
+      .then((response) => {
         setUsers(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (error instanceof CanceledError) {
+          console.log("Request canceled", error.message);
+        } else if (error instanceof Error) {
+          setError(error.message);
+        } else if (error instanceof AxiosError) {
+          setError(error.message);
+        }
+        setError(error.message);
+        setIsLoading(false);
+      });
 
-        return () => {
-          controller.abort();
-        };
-      } catch (error) {
-        if (error instanceof CanceledError) return;
-        setError((error as AxiosError).message);
-      }
+    return () => {
+      cancel();
     };
-
-    fetchUsers();
-    // .then((response) => {
-    //   setUsers(response.data);
-    // })
-    // .catch((error) => {
-    //   setError(error.message);
-    // });
   }, []);
+
+  const deleteUser = (user: User) => {
+    const originalUsers = [...users];
+    setUsers(users.filter((u) => u.id !== user.id));
+
+    UserService.deleteUser(user.id).catch((error) => {
+      setUsers(originalUsers);
+      setError(error.message);
+    });
+  };
+
+  const createUser = () => {
+    const originalUsers = [...users];
+    const newUser = { id: 0, name: "Virendra" } as User;
+    setUsers([newUser, ...users]);
+
+    UserService.createUser(newUser)
+      .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
+      .catch((error) => {
+        setUsers(originalUsers);
+        setError(error.message);
+      });
+  };
+
+  const updateUser = (user: User) => {
+    const originalUsers = [...users];
+    const updatedUser = { ...user, name: user.name + " Updated" };
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
+
+    UserService.updateUser(updatedUser).catch((error) => {
+      setUsers(originalUsers);
+      setError(error.message);
+    });
+  };
 
   return (
     <>
@@ -181,6 +195,10 @@ function App() {
           <div key={user.id}>
             <h1>{user.name}</h1>
             <p>{user.email}</p>
+            <div>
+              <button onClick={() => updateUser(user)}>Update</button>
+              <button onClick={() => deleteUser(user)}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
