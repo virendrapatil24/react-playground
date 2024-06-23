@@ -15,7 +15,7 @@ import { set } from "react-hook-form";
 import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
 import ExpenseForm from "./expense-tracker/components/ExpenseForm";
 import ProductList from "./components/ProductList";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, CanceledError } from "axios";
 
 interface User {
   id: number;
@@ -91,13 +91,20 @@ function App() {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchUsers = async () => {
       try {
         const response = await axios.get<User[]>(
-          "https://jsonplaceholder.typicode.com/users"
+          "https://jsonplaceholder.typicode.com/users",
+          { signal: controller.signal }
         );
         setUsers(response.data);
+
+        return () => {
+          controller.abort();
+        };
       } catch (error) {
+        if (error instanceof CanceledError) return;
         setError((error as AxiosError).message);
       }
     };
